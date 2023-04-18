@@ -6,6 +6,6 @@ class Article(models.Model):
         return str(self.title)
 
     title = models.CharField(max_length=120)
-    content = models.TextField()
+    content = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

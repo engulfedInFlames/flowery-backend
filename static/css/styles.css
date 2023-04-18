@@ -1,0 +1,15 @@
+.title {
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+}
+
+.article {
+  width: 100%;
+  padding: 0 24px;
+  margin-bottom: 8px;
+  border: 1px solid black;
+  border-radius: 4px;
+}
