@@ -5,14 +5,19 @@
 {%block title%}로그인{%endblock%}
 <!-- Content -->
 {%block content%}
-<form>
-    <h1>로그인</h1>
-    <input id="email" type="email" name="email" placeholder="example@gmail.com"/>
-    <input id="password" type="password" name="password"/>
-    <button id="login-btn" type="button">로그인</button>
-    <button id="token-login-btn" type="button">토큰 로그인</button>
-    <button id="logout-btn" type="button">로그아웃</button>
-</from>
+<div class="form-wrapper">
+    <form>
+        <h1>로그인</h1>
+        <input id="email" type="email" name="email" placeholder="example@gmail.com"/>
+        <input id="password" type="password" name="password"/>
+        <div class="login-btns">
+            <button id="login-btn" type="button">로그인</button>
+            <button id="token-login-btn" type="button">토큰 로그인</button>
+        </div>
+        
+    </from>
+</div>
+
 
 <script src="{% static 'js/login.js' %}"></script>
 {%endblock%}

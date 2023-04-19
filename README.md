@@ -1,1 +1,3 @@
-# sparta-drf_tutorial
+# template-drf_with_jwt
+
+Django, DRF, Simple JWT💕

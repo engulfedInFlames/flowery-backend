@@ -4,7 +4,6 @@ window.onload = () => {
 
 const loginBtn = document.getElementById("login-btn");
 const tokenLoginBtn = document.getElementById("token-login-btn");
-const logoutBtn = document.getElementById("logout-btn");
 
 const onClickLogin = async () => {
   console.log("로그인 버튼 클릭");
@@ -21,7 +20,6 @@ const onClickLogin = async () => {
       }),
     })
   ).json();
-  console.log(json);
 
   // 토큰을 얻었다면 이를 로컬 스토리지에 저장한다.
   const base64url = json.access.split(".")[1];
@@ -44,7 +42,7 @@ const onClickTokenLogin = async () => {
   console.log("토큰 로그인 버튼 클릭");
 
   const json = await (
-    await fetch("http://127.0.0.1:8000/api/v1/users/4", {
+    await fetch("http://127.0.0.1:8000/api/v1/users/1", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("access"),
       },
@@ -54,14 +52,5 @@ const onClickTokenLogin = async () => {
   console.log(json);
 };
 
-const onClickLogout = () => {
-  localStorage.removeItem("access");
-  localStorage.removeItem("refresh");
-  localStorage.removeItem("payload");
-
-  window.location.reload();
-};
-
 loginBtn.addEventListener("click", onClickLogin);
 tokenLoginBtn.addEventListener("click", onClickTokenLogin);
-logoutBtn.addEventListener("click", onClickLogout);

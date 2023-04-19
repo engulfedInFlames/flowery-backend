@@ -5,12 +5,14 @@
 {%block title%}회원가입{%endblock%}
 <!-- Content -->
 {%block content%}
-<form>
-    <h1>회원가입</h1>
-    <input id="email" type="email" name="email" placeholder="example@gmail.com"/>
-    <input id="password" type="password" name="password"/>
-    <button id="btn" type="button">제출</button>
-</from>
+<div class="form-wrapper">
+    <form class="center">
+        <h1>회원가입</h1>
+        <input id="email" type="email" name="email" placeholder="email@example.com"/>
+        <input id="password" type="password" name="password"/>
+        <button id="btn" type="button">회원가입</button>
+    </from>
+</div>
 
 <script src="{% static 'js/signup.js' %}"></script>
 {%endblock%}

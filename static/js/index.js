@@ -1,14 +1,24 @@
 window.onload = () => {
   console.log("홈 페이지");
+  const payload = localStorage.getItem("payload");
+  const parsed_payload = JSON.parse(payload);
+
+  const container = document.getElementById("container");
+  const h3 = document.createElement("h3");
+
+  h3.innerText = parsed_payload.email;
+  container.appendChild(h3);
 };
 
-const payload = localStorage.getItem("payload");
-const parsed_payload = JSON.parse(payload);
+const logoutBtn = document.getElementById("logout-btn");
 
-const container = document.getElementById("container");
-const h3 = document.createElement("h3");
+const onClickLogout = () => {
+  console.log("로그아웃 버튼 클릭");
+  localStorage.removeItem("access");
+  localStorage.removeItem("refresh");
+  localStorage.removeItem("payload");
 
-console.log(parsed_payload.email);
+  window.location.reload();
+};
 
-h3.innerText = parsed_payload.email;
-container.appendChild(h3);
+logoutBtn.addEventListener("click", onClickLogout);
