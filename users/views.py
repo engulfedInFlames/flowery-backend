@@ -1,9 +1,17 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 from .models import CustomUser
-from .serializers import UserSerializer
+from .serializers import UserSerializer, CustomTokenObtainPairSerializer
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 
 class Users(APIView):
@@ -24,6 +32,8 @@ class Users(APIView):
 
 
 class User(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get_object(self, id):
         return get_object_or_404(CustomUser, id=id)
 
@@ -46,3 +56,18 @@ class User(APIView):
         user = self.get_object(id)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class Home(APIView):
+    def get(self, request):
+        return render(request, "home.html")
+
+
+class Signup(APIView):
+    def get(self, request):
+        return render(request, "users/signup.html")
+
+
+class Login(APIView):
+    def get(self, request):
+        return render(request, "users/login.html")

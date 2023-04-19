@@ -1,6 +1,18 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework.exceptions import ParseError
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from .models import CustomUser
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(self, user):
+        token = super().get_token(user)
+        token["email"] = user.email
+
+        return token
 
 
 class UserSerializer(ModelSerializer):

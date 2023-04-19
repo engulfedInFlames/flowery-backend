@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
+<!-- Static -->
+{% load static %}
 <!-- Title -->
 {%block title%}홈{%endblock%}
 <!-- Content -->
 {%block content%}
-<div class="container">
+<div id="container">
   <h1 class="title">홈 화면</h1>
-  <div id="wrapper"></div>
 </div>
 
+<script src="{% static 'js/index.js' %}"></script>
 {%endblock%}
