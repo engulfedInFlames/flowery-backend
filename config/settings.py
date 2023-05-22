@@ -23,6 +23,7 @@ SYSTEM_APPS = [
 
 CUSTOM_APPS = [
     "users.apps.UsersConfig",
+    "article",
 ]
 
 THIRD_PARTY_APPS = [
@@ -142,7 +143,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1000),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "TOKEN_OBTAIN_SERIALIZER": "users.serializers.CustomTokenObtainPairSerializer",
 }
