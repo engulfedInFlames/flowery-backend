@@ -21,6 +21,7 @@ class UserSerializer(ModelSerializer):
         fields = (
             "id",
             "email",
+            "nickname",
             "password",
             "is_active",
             "is_superuser",
