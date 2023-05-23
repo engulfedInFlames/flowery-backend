@@ -2,6 +2,7 @@ import os
 import dotenv
 from pathlib import Path
 from datetime import timedelta
+from config import my_settings
 
 env_file = dotenv.find_dotenv()
 dotenv.load_dotenv(env_file)
@@ -69,12 +70,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # ✅ DB 설정
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+DATABASES = my_settings.DATABASES
 
 
 AUTH_PASSWORD_VALIDATORS = [
