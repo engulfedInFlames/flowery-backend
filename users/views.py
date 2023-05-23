@@ -31,7 +31,7 @@ class UserList(APIView):
         if serializer.is_valid():
             user = serializer.save()
             serializer = UserSerializer(user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -101,7 +101,8 @@ class KaKaoLogin(APIView):
                 "code": code,
                 "client_secret": os.environ.get("KAKAO_CLIENT_SECRET"),
             },
-            headers={"Content-type": "application/x-www-form-urlencoded;charset=utf-8"},
+            headers={
+                "Content-type": "application/x-www-form-urlencoded;charset=utf-8"},
         )
 
         access_token = response.json().get("access_token")
