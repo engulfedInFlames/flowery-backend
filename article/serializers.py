@@ -3,12 +3,13 @@ from article.models import Article, Comment, Photos
 
 
 class ImageSerializer(serializers.ModelSerializer):
-
     image = serializers.ImageField(use_url=True)
 
     class Meta:
         model = Photos
-        fields = ['image',]
+        fields = [
+            "image",
+        ]
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -20,7 +21,7 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ArticleDetailSerializer(serializers.ModelSerializer):
@@ -32,7 +33,7 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ArticleCreateSerializer(serializers.ModelSerializer):
@@ -40,12 +41,12 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        exclude = ['user', 'likes']
+        exclude = ["user", "likes"]
 
     def create(self, validated_data):
         instance = Article.objects.create(**validated_data)
-        image_set = self.context['request'].FILES
-        for image_data in image_set.getlist('image'):
+        image_set = self.context["request"].FILES
+        for image_data in image_set.getlist("image"):
             Photos.objects.create(article=instance, image=image_data)
         return instance
 
@@ -53,4 +54,6 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ["content",]
+        fields = [
+            "content",
+        ]

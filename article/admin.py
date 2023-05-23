@@ -1,3 +1,24 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Article, Comment, Photos
+
+
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = (
+        "pk",
+        "title",
+    )
+
+
+@admin.register(Comment)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ("pk",)
+
+
+@admin.register(Photos)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = (
+        "pk",
+        "image",
+    )
