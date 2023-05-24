@@ -2,16 +2,25 @@ import os
 import dotenv
 from pathlib import Path
 from datetime import timedelta
-from . import my_settings
+from . import db
+import pymysql
 
 env_file = dotenv.find_dotenv()
 dotenv.load_dotenv(env_file)
+
+pymysql.version_info = (1, 4, 3, "final", 0)
+pymysql.install_as_MySQLdb()
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = True
 
+# ✅ DB 설정
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
+DATABASES = db.DATABASES
 
 SYSTEM_APPS = [
     "django.contrib.admin",
@@ -67,11 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# ✅ DB 설정
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = my_settings.DATABASES
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -121,13 +125,15 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:4000",
-    "http://127.0.0.1:4000",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://43.200.5.66",
 ]
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "43.200.5.66",
 ]
 
 
