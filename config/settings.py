@@ -2,6 +2,7 @@ import os
 import dotenv
 from pathlib import Path
 from datetime import timedelta
+from config import my_settings
 
 env_file = dotenv.find_dotenv()
 dotenv.load_dotenv(env_file)
@@ -23,6 +24,7 @@ SYSTEM_APPS = [
 
 CUSTOM_APPS = [
     "users.apps.UsersConfig",
+    "article",
 ]
 
 THIRD_PARTY_APPS = [
@@ -68,12 +70,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # ✅ DB 설정
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+DATABASES = my_settings.DATABASES
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -124,8 +121,8 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "http://localhost:4000",
+    "http://127.0.0.1:4000",
 ]
 
 ALLOWED_HOSTS = [
@@ -142,7 +139,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1000),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "TOKEN_OBTAIN_SERIALIZER": "users.serializers.CustomTokenObtainPairSerializer",
 }
