@@ -3,7 +3,9 @@ import dotenv
 from pathlib import Path
 from datetime import timedelta
 from config import my_settings
-
+import pymysql
+pymysql.version_info = (1, 4, 3, "final", 0)
+pymysql.install_as_MySQLdb()
 env_file = dotenv.find_dotenv()
 dotenv.load_dotenv(env_file)
 
@@ -12,6 +14,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = True
 
+# ✅ DB 설정
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
+DATABASES = my_settings.DATABASES
 
 SYSTEM_APPS = [
     "django.contrib.admin",
@@ -67,10 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# ✅ DB 설정
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = my_settings.DATABASES
 
 
 AUTH_PASSWORD_VALIDATORS = [
