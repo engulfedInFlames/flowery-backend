@@ -49,11 +49,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             "email",
             "nickname",
-<<<<<<< Updated upstream
             "is_active",
-=======
-            "password"
->>>>>>> Stashed changes
         )
 
 
