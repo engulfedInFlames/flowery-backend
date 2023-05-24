@@ -11,6 +11,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(self, user):
         token = super().get_token(user)
         token["email"] = user.email
+        print(token)
 
         return token
 
@@ -46,10 +47,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = (
-            "pk",
             "email",
             "nickname",
+<<<<<<< Updated upstream
             "is_active",
+=======
+            "password"
+>>>>>>> Stashed changes
         )
 
 
