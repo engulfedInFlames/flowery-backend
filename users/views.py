@@ -10,7 +10,11 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import CustomUser
-from .serializers import UserSerializer, CustomTokenObtainPairSerializer
+from .serializers import (
+    UserSerializer,
+    CreateUserSerializer,
+    CustomTokenObtainPairSerializer,
+)
 
 env_file = dotenv.find_dotenv()
 dotenv.load_dotenv(env_file)
@@ -27,7 +31,7 @@ class UserList(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = CreateUserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             serializer = UserSerializer(user)
@@ -207,6 +211,7 @@ class GithubLogin(APIView):
         print("Email : ", user_email)
         try:
             user = CustomUser.objects.get(email=user_email)
+
             refresh_token = CustomTokenObtainPairSerializer.get_token(user)
 
             return Response(
@@ -220,6 +225,7 @@ class GithubLogin(APIView):
             user = CustomUser.objects.create_user(email=user_email)
             user.nickname = user_data.get("login", f"user#{user.pk}")
             user.avatar = user_data.get("avatar_url", None)
+            user.set_unusable_password()
             user.save()
 
             refresh_token = CustomTokenObtainPairSerializer.get_token(user)
