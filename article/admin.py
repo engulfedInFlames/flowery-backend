@@ -12,12 +12,12 @@ class ArticleAdmin(admin.ModelAdmin):
 
 
 @admin.register(Comment)
-class ArticleAdmin(admin.ModelAdmin):
+class CommentAdmin(admin.ModelAdmin):
     list_display = ("pk",)
 
 
 @admin.register(Photos)
-class ArticleAdmin(admin.ModelAdmin):
+class PhotosAdmin(admin.ModelAdmin):
     list_display = (
         "pk",
         "image",

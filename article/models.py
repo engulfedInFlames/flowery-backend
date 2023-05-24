@@ -10,15 +10,19 @@ class Article(models.Model):
     )
     title = models.CharField(max_length=255)
     content = models.TextField()
+    # ✅ photo = models.Foreignkey()
+    # ✅ result = models.Charfield(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # 좋아요
     likes = models.ManyToManyField(
         CustomUser,
         blank=True,
         symmetrical=False,
     )
+
+    def __str__(self) -> str:
+        return f"게시글 #{self.pk}"
 
     class Meta:
         verbose_name_plural = "게시글들"
@@ -39,8 +43,16 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self) -> str:
+        return f"댓글 #{self.pk}"
+
     class Meta:
         verbose_name_plural = "댓글들"
+
+
+# ✅ 모델명 Photos => Photo
+# ✂️ Photo 모델에 article 필드 제거하고, article 필드에 photo 모델을 ForeignKey로 등록. related_name은 "article"
+# ✅ 수정된 내용 serializers, views, urls 반영
 
 
 class Photos(models.Model):
@@ -54,6 +66,9 @@ class Photos(models.Model):
         blank=True,
         null=True,
     )
+
+    def __str__(self) -> str:
+        return f"사진 #{self.pk}"
 
     class Meta:
         verbose_name_plural = "사진들"
