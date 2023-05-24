@@ -2,7 +2,7 @@ import os
 import dotenv
 from pathlib import Path
 from datetime import timedelta
-from config import my_settings
+from . import my_settings
 
 env_file = dotenv.find_dotenv()
 dotenv.load_dotenv(env_file)
