@@ -16,7 +16,7 @@ class ArticleList(APIView):
 
         return Response(
             {
-                "article": article_serialize.data,
+                "articles": article_serialize.data,
             },
             status=status.HTTP_200_OK,
         )
@@ -37,11 +37,11 @@ class ArticleList(APIView):
 class ArticleDetail(APIView):
     def get(self, request, pk):
         article = get_object_or_404(Article, id=pk)
-        comment = Comment.objects.filter(article=pk)
+        comments = Comment.objects.filter(article=pk)
         article_serialize = serializers.ArticleDetailSerializer(article)
-        comment_serialize = serializers.CommentSerializer(comment, many=True)
+        comments_serialize = serializers.CommentSerializer(comments, many=True)
         return Response(
-            {"article": article_serialize.data, "comment": comment_serialize.data},
+            {"article": article_serialize.data, "comments": comments_serialize.data},
             status=status.HTTP_200_OK,
         )
 

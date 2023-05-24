@@ -5,7 +5,7 @@ from django.core.validators import validate_email
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, email, password=None):  # 2.
+    def create_user(self, email, password=None):
         if not email:
             raise ValueError("Users must have an email address")
 
@@ -17,7 +17,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None):  # 3.
+    def create_superuser(self, email, password=None):
         user = self.create_user(
             email,
             password=password,
@@ -35,7 +35,12 @@ class CustomUser(AbstractUser):
         max_length=240,
         unique=True,
     )
-    nickname = models.CharField("닉네임", max_length=20, unique=True)
+    nickname = models.CharField(
+        max_length=20,
+        unique=True,
+        null=True,
+        blank=True,
+    )
     avatar = models.URLField()
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
