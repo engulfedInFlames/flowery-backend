@@ -121,13 +121,15 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:4000",
-    "http://127.0.0.1:4000",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://43.200.5.66",
 ]
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "43.200.5.66",
 ]
 
 
