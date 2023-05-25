@@ -1,14 +1,17 @@
+import base64
+from django.core.files.base import ContentFile
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from article.models import Article, Comment, Photos
+from rest_framework.parsers import FileUploadParser
+from article.models import Article, Comment
 from article import serializers
 
 
 class ArticleList(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get(self, request):
         article = Article.objects.all()
@@ -16,47 +19,48 @@ class ArticleList(APIView):
 
         return Response(
             {
-                "article": article_serialize.data,
+                "articles": article_serialize.data,
             },
             status=status.HTTP_200_OK,
         )
 
     def post(self, request):
-        serialize = serializers.ArticleCreateSerializer(
-            data=request.data, context={"request": request}
-        )
-        if serialize.is_valid():
-            serialize.save(user=request.user)
-            return Response(serialize.data, status=status.HTTP_200_OK)
-        else:
+        data = request.data  # ✅ title, content, image
+        image_data = data.pop("image")  # 현재 Dict 자료형
+
+        # From numercial to bytes
+        buffer_data = image_data.get("buffer").get("data")
+        image_bytes = bytes(buffer_data)
+        serializer = serializers.CreateArticleSerializer(data=data)
+
+        if serializer.is_valid():
+            article = serializer.save(
+                user=request.user,
+                image=ContentFile(image_bytes, name=image_data["originalname"]),
+            )
+            serializer = serializers.ArticleSerializer(article)
+            print(serializer.data)
             return Response(
-                {"message": f"${serialize.errors}"}, status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_200_OK,
+            )
+        else:
+            print("article ❌")
+            print(serializer.errors)
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
 
 class ArticleDetail(APIView):
     def get(self, request, pk):
         article = get_object_or_404(Article, id=pk)
-        comment = Comment.objects.filter(article=pk)
-        article_serialize = serializers.ArticleDetailSerializer(article)
-        comment_serialize = serializers.CommentSerializer(comment, many=True)
+        comments = Comment.objects.filter(article=pk)
+        article_serialize = serializers.ArticleSerializer(article)
+        comments_serialize = serializers.CommentSerializer(comments, many=True)
         return Response(
-            {"article": article_serialize.data, "comment": comment_serialize.data},
+            {"article": article_serialize.data, "comments": comments_serialize.data},
             status=status.HTTP_200_OK,
         )
-
-
-class ToggleArticleLike(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, pk):
-        article = get_object_or_404(Article, id=pk)
-        if request.user in article.likes.all():
-            article.likes.remove(request.user)
-            return Response({"message": "취소"}, status=status.HTTP_202_ACCEPTED)
-        else:
-            article.likes.add(request.user)
-            return Response({"message": "좋아요"}, status=status.HTTP_200_OK)
 
 
 class CreateComment(APIView):
@@ -64,11 +68,13 @@ class CreateComment(APIView):
 
     def post(self, request, pk):
         serialize = serializers.CommentSerializer(data=request.data)
-        article = Article.objects.get(id=pk)
+        article = Article.objects.get(pk=pk)
         if serialize.is_valid():
-            serialize.save(user=request.user, article=article)
-            return Response({"message": "댓글 작성 완료"}, status=status.HTTP_200_OK)
-        else:
-            return Response(
-                {"message": f"${serialize.errors}"}, status=status.HTTP_400_BAD_REQUEST
+            serialize.save(
+                user=request.user,
+                article=article,
             )
+            return Response(status=status.HTTP_200_OK)
+        else:
+            print(serialize.errors)
+            return Response(status=status.HTTP_400_BAD_REQUEST)

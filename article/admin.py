@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Article, Comment, Photos
+from .models import Article, Comment
 
 
 @admin.register(Article)
@@ -12,13 +12,5 @@ class ArticleAdmin(admin.ModelAdmin):
 
 
 @admin.register(Comment)
-class ArticleAdmin(admin.ModelAdmin):
+class CommentAdmin(admin.ModelAdmin):
     list_display = ("pk",)
-
-
-@admin.register(Photos)
-class ArticleAdmin(admin.ModelAdmin):
-    list_display = (
-        "pk",
-        "image",
-    )

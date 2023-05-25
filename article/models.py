@@ -12,13 +12,18 @@ class Article(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # 좋아요
-    likes = models.ManyToManyField(
-        CustomUser,
+    image = models.ImageField(
+        upload_to="images/%Y/%m/%d",
+        null=True,
         blank=True,
-        symmetrical=False,
     )
+    result = models.TextField(
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self) -> str:
+        return f"게시글 #{self.pk}"
 
     class Meta:
         verbose_name_plural = "게시글들"
@@ -39,21 +44,8 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self) -> str:
+        return f"댓글 #{self.pk}"
+
     class Meta:
         verbose_name_plural = "댓글들"
-
-
-class Photos(models.Model):
-    article = models.ForeignKey(
-        Article,
-        on_delete=models.CASCADE,
-        related_name="photos",
-    )
-    image = models.ImageField(
-        upload_to="article/%Y/%m/%d",
-        blank=True,
-        null=True,
-    )
-
-    class Meta:
-        verbose_name_plural = "사진들"

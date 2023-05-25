@@ -1,59 +1,60 @@
 from rest_framework import serializers
-from article.models import Article, Comment, Photos
-
-
-class ImageSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
-
-    class Meta:
-        model = Photos
-        fields = [
-            "image",
-        ]
+from article.models import Article, Comment
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
+    comments_count = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
+    image = serializers.ImageField(
+        max_length=None,
+        use_url=True,
+    )
+    created_at = serializers.DateTimeField(
+        format="%Y-%m-%d %H:%M:%S",
+        read_only=True,
+    )
 
-    def get_image(self, obj):
-        image = obj.photo_article.first()
-        return ImageSerializer(instance=image).data
+    def get_user(self, obj):
+        nickname = obj.user.nickname
+        return nickname
 
-    class Meta:
-        model = Article
-        fields = "__all__"
-
-
-class ArticleDetailSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
-
-    def get_image(self, obj):
-        image = obj.photo_article.all()
-        return ImageSerializer(instance=image, many=True).data
-
-    class Meta:
-        model = Article
-        fields = "__all__"
-
-
-class ArticleCreateSerializer(serializers.ModelSerializer):
-    article_photo = ImageSerializer(many=True, read_only=True)
+    def get_comments_count(self, obj):
+        return obj.comments.count()
 
     class Meta:
         model = Article
-        exclude = ["user", "likes"]
+        fields = (
+            "pk",
+            "title",
+            "content",
+            "image",
+            "result",
+            "user",
+            "comments_count",
+            "created_at",
+        )
 
-    def create(self, validated_data):
-        instance = Article.objects.create(**validated_data)
-        image_set = self.context["request"].FILES
-        for image_data in image_set.getlist("image"):
-            Photos.objects.create(article=instance, image=image_data)
-        return instance
+
+class CreateArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        exclude = ["user", "image", "result"]
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    created_at = serializers.DateTimeField(
+        format="%Y-%m-%d %H:%M:%S",
+        read_only=True,
+    )
+    user = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+        return obj.user.nickname
+
     class Meta:
         model = Comment
         fields = [
+            "user",
             "content",
+            "created_at",
         ]

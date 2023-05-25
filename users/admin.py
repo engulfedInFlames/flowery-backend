@@ -77,8 +77,8 @@ class CustomUserAdmin(BaseUserAdmin):
             {
                 "fields": (
                     "email",
-                    "nickname",
                     "password",
+                    "nickname",
                 ),
                 "classes": "wide",
             },
