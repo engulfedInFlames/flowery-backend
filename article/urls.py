@@ -17,9 +17,4 @@ urlpatterns = [
         views.CreateComment.as_view(),
         name="article_comments",
     ),
-    path(
-        "<int:pk>/like/",
-        views.ToggleArticleLike.as_view(),
-        name="article_like",
-    ),
 ]

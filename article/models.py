@@ -2,17 +2,6 @@ from django.db import models
 from users.models import CustomUser
 
 
-class Photo(models.Model):
-    image = models.ImageField(
-        upload_to="article/%Y/%m/%d")
-
-    def __str__(self) -> str:
-        return f"사진 #{self.pk}"
-
-    class Meta:
-        verbose_name_plural = "사진들"
-
-
 class Article(models.Model):
     user = models.ForeignKey(
         CustomUser,
@@ -23,14 +12,14 @@ class Article(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.ForeignKey(
-        Photo, on_delete=models.CASCADE, related_name="article")
-    result = models.TextField()
-
-    likes = models.ManyToManyField(
-        CustomUser,
+    image = models.ImageField(
+        upload_to="images/%Y/%m/%d",
+        null=True,
         blank=True,
-        symmetrical=False,
+    )
+    result = models.TextField(
+        null=True,
+        blank=True,
     )
 
     def __str__(self) -> str:
