@@ -12,6 +12,15 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class ArticleSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        image = obj.image
+        return ImageSerializer(instance=image).data['image']
+
+    def get_user(self, obj):
+        return obj.user.email
 
     def get_comments_count(self, obj):
         count = Comment.objects.filter(article__pk=obj.pk).count()
@@ -31,7 +40,8 @@ class CreateArticleSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    created_at = serializers.DateTimeField(
+        format="%Y-%m-%d %H:%M:%S", read_only=True)
     user = serializers.SerializerMethodField()
 
     def get_user(self, obj):
