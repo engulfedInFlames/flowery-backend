@@ -22,16 +22,17 @@ class ArticleList(APIView):
         )
 
     def post(self, request):
-        serialize = serializers.ArticleCreateSerializer(
-            data=request.data, context={"request": request}
-        )
-        if serialize.is_valid():
-            serialize.save(user=request.user)
-            return Response(serialize.data, status=status.HTTP_200_OK)
-        else:
-            return Response(
-                {"message": f"${serialize.errors}"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        print(request)
+        # serialize = serializers.CreateArticleSerializer(
+        #     data=request.data,
+        #     context={"request": request},
+        # )
+        # if serialize.is_valid():
+        #     serialize.save(user=request.user)
+        #     return Response(serialize.data, status=status.HTTP_200_OK)
+        # else:
+        #     print(serialize.errors)
+        #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class ArticleDetail(APIView):
@@ -64,11 +65,13 @@ class CreateComment(APIView):
 
     def post(self, request, pk):
         serialize = serializers.CommentSerializer(data=request.data)
-        article = Article.objects.get(id=pk)
+        article = Article.objects.get(pk=pk)
         if serialize.is_valid():
-            serialize.save(user=request.user, article=article)
-            return Response({"message": "댓글 작성 완료"}, status=status.HTTP_200_OK)
-        else:
-            return Response(
-                {"message": f"${serialize.errors}"}, status=status.HTTP_400_BAD_REQUEST
+            serialize.save(
+                user=request.user,
+                article=article,
             )
+            return Response(status=status.HTTP_200_OK)
+        else:
+            print(serialize.errors)
+            return Response(status=status.HTTP_400_BAD_REQUEST)

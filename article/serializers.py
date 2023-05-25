@@ -50,7 +50,7 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ArticleCreateSerializer(serializers.ModelSerializer):
+class CreateArticleSerializer(serializers.ModelSerializer):
     article_photo = ImageSerializer(many=True, read_only=True)
 
     class Meta:
@@ -66,7 +66,7 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     user = serializers.SerializerMethodField()
 
     def get_user(self, obj):
