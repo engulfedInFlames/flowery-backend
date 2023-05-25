@@ -12,5 +12,8 @@ DATABASES = {
         "PASSWORD": os.environ.get("MYSQL_PW"),  # mysql 계정 비밀번호
         "HOST": "127.0.0.1",
         "PORT": os.environ.get("MYSQL_PORT"),
+        "OPTIONS": {
+            "read_default_file": "/path/to/my.cnf",
+        },
     }
 }

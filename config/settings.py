@@ -120,22 +120,25 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 
-SESSION_COOKIE_SECURE = True
-
+'''
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:8000",
     "http://127.0.0.1:3000",
-    "http://43.200.5.66",
+    "3.38.105.28",
 ]
-
+'''
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "43.200.5.66",
+    "3.38.105.28",
 ]
+
+CORS_ORIGIN_WHITELIST = ["http://3.38.105.28", "http://localhost","http://127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = CORS_ORIGIN_WHITELIST
+
 
 
 # ✅ JWT 설정
