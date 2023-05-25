@@ -14,6 +14,7 @@ class UserRegistrationTest(APITestCase):
         }
         response = self.client.post(reverse("user_list"), user_data)
         self.assertEqual(response.status_code, 200)
+        # print(response.data)
 
     # def test_something_that_will_pass(self):
     #     self.assertFalse(False)
@@ -28,7 +29,6 @@ class LoginUserTest(APITestCase):
         self.data = {
             "email": "sparta101@naver.com",
             "nickname": "spartaTest101",
-            # 그럼 닉네임 validatate는 어카지...?
             "password": "password",
         }
         self.user = CustomUser.objects.create_user(
