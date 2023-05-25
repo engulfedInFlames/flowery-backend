@@ -33,7 +33,7 @@ class ArticleList(APIView):
             image = Photo.objects.get(id=last_id)
 
             data.pop('image')
-            data_serialize = serializers.ArticleCreateSerializer(data=data)
+            data_serialize = serializers.CreateArticleSerializer(data=data)
             if data_serialize.is_valid():
                 data_serialize.save(user=request.user,
                                     image=image, result=result)
