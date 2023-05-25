@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from article.models import Article, Comment, Photos
+from article import aiutils
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -58,10 +59,14 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
         exclude = ["user", "likes"]
 
     def create(self, validated_data):
+        
         instance = Article.objects.create(**validated_data)
         image_set = self.context["request"].FILES
+        content = {}
         for image_data in image_set.getlist("image"):
-            Photos.objects.create(article=instance, image=image_data)
+            img = Photos.objects.create(article=instance, image=image_data)
+            content = aiutils.image_mache(img.image)
+        instance.content = content
         return instance
 
 

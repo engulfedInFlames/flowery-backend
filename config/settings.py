@@ -149,3 +149,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "TOKEN_OBTAIN_SERIALIZER": "users.serializers.CustomTokenObtainPairSerializer",
 }
+
+from article.aiutils import load_model
+AI_MODEL = load_model('chkpt.pth')
+# chkpy.pth 파일 업로드된 구글드라이브 링크
+# https://drive.google.com/file/d/1M0H1ExUQL0_IxGFyhDMwkE1hJGUXrssU/view?usp=share_link
