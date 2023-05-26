@@ -163,7 +163,7 @@ class GithubLogin(APIView):
         token_url = "https://github.com/login/oauth/access_token"
 
         # ✅ 자신이 설정한 redirect_uri를 할당
-        redirect_uri = "http://127.0.0.1:4000/github-login"
+        redirect_uri = "http://3.34.155.8/github-login"
 
         if code is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -208,7 +208,6 @@ class GithubLogin(APIView):
             if email_data.get("primary") and email_data.get("verified"):
                 user_email = email_data.get("email")
 
-        print("Email : ", user_email)
         try:
             user = CustomUser.objects.get(email=user_email)
 
@@ -236,3 +235,8 @@ class GithubLogin(APIView):
                     "access": str(refresh_token.access_token),
                 }
             )
+
+
+class GoogleLogin(APIView):
+    def post(self, request):
+        pass

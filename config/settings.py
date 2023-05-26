@@ -1,9 +1,10 @@
 import os
 import dotenv
+import pymysql
 from pathlib import Path
 from datetime import timedelta
 from . import db
-import pymysql
+from article.aiutils import load_model
 
 env_file = dotenv.find_dotenv()
 dotenv.load_dotenv(env_file)
@@ -122,23 +123,22 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_COOKIE_SECURE = False
 
-'''
+"""
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:8000",
     "http://127.0.0.1:3000",
     "3.38.105.28",
 ]
-'''
+"""
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "3.38.105.28",
 ]
 
-CORS_ORIGIN_WHITELIST = ["http://3.38.105.28", "http://localhost","http://127.0.0.1"]
+CORS_ORIGIN_WHITELIST = ["http://3.38.105.28", "http://localhost", "http://127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = CORS_ORIGIN_WHITELIST
-
 
 
 # ✅ JWT 설정
@@ -153,3 +153,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "TOKEN_OBTAIN_SERIALIZER": "users.serializers.CustomTokenObtainPairSerializer",
 }
+
+# ✅ 딥러닝 모델 관련 설정
+AI_MODEL = load_model("chkpt.pth")
+# chkpy.pth 파일 업로드된 구글드라이브 링크
+# https://drive.google.com/file/d/1M0H1ExUQL0_IxGFyhDMwkE1hJGUXrssU/view?usp=share_link

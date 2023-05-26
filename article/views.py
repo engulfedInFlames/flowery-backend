@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import FileUploadParser
 from article.models import Article, Comment
 from article import serializers
 
@@ -26,7 +25,7 @@ class ArticleList(APIView):
 
     def post(self, request):
         data = request.data  # ✅ title, content, image
-        image_data = data.pop("image")  # 현재 Dict 자료형
+        image_data = data.pop("image")
 
         # From numercial to bytes
         buffer_data = image_data.get("buffer").get("data")
