@@ -136,9 +136,9 @@ ALLOWED_HOSTS = [
     "3.38.105.28",
 ]
 
-CORS_ORIGIN_WHITELIST = ["http://3.38.105.28", "http://localhost","http://127.0.0.1"]
+CORS_ORIGIN_WHITELIST = ["http://3.38.105.28",
+                         "http://localhost", "http://127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = CORS_ORIGIN_WHITELIST
-
 
 
 # ✅ JWT 설정
