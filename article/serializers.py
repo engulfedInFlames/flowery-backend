@@ -40,6 +40,17 @@ class CreateArticleSerializer(serializers.ModelSerializer):
         model = Article
         exclude = ["user", "image", "result"]
 
+    # def create(self, validated_data):
+
+    #     instance = Article.objects.create(**validated_data)
+    #     image_set = self.context["request"].FILES
+    #     content = {}
+    #     for image_data in image_set.getlist("image"):
+    #         img = Photos.objects.create(article=instance, image=image_data)
+    #         content = aiutils.image_mache(img.image)
+    #     instance.content = content
+    #     return instance
+
 
 class CommentSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(
