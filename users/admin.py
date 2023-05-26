@@ -27,7 +27,7 @@ class UserCreationForm(forms.ModelForm):
         password1 = self.cleaned_data.get("password1", None)
         password2 = self.cleaned_data.get("password2", None)
 
-        if all(password1, password2) == False:
+        if (password1 == False) | (password2 == False):
             raise ValidationError("Passwords should not be empty")
 
         if password1 != password2:
@@ -68,6 +68,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
     list_display = (
         "email",
+        "nickname",
         "is_superuser",
     )
     fieldsets = (
@@ -96,6 +97,7 @@ class CustomUserAdmin(BaseUserAdmin):
             {
                 "fields": (
                     "email",
+                    "nickname",
                     "password1",
                     "password2",
                 )
