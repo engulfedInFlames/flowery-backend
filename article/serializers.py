@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from article.models import Article, Comment
+from . import aiutils
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -38,18 +39,20 @@ class ArticleSerializer(serializers.ModelSerializer):
 class CreateArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        exclude = ["user", "image", "result"]
+        exclude = (
+            "user",
+            "image",
+            "result",
+        )
 
-    # def create(self, validated_data):
-
-    #     instance = Article.objects.create(**validated_data)
-    #     image_set = self.context["request"].FILES
-    #     content = {}
-    #     for image_data in image_set.getlist("image"):
-    #         img = Photos.objects.create(article=instance, image=image_data)
-    #         content = aiutils.image_mache(img.image)
-    #     instance.content = content
-    #     return instance
+    def create(self, validated_data):
+        print("Now being created...")
+        article = super().create(validated_data)
+        result = aiutils.image_mache(article.image)
+        article.result = result
+        print(result)
+        article.save()
+        return article
 
 
 class CommentSerializer(serializers.ModelSerializer):

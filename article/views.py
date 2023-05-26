@@ -10,7 +10,7 @@ from article import serializers
 
 
 class ArticleList(APIView):
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    # permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get(self, request):
         article = Article.objects.all()
@@ -24,7 +24,7 @@ class ArticleList(APIView):
         )
 
     def post(self, request):
-        data = request.data  # ✅ title, content, image
+        data = request.data
         image_data = data.pop("image")
 
         # From numercial to bytes
@@ -43,7 +43,6 @@ class ArticleList(APIView):
                 status=status.HTTP_200_OK,
             )
         else:
-            print("article ❌")
             print(serializer.errors)
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
@@ -75,5 +74,4 @@ class CreateComment(APIView):
             )
             return Response(status=status.HTTP_200_OK)
         else:
-            print(serialize.errors)
             return Response(status=status.HTTP_400_BAD_REQUEST)

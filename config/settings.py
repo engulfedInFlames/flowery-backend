@@ -155,6 +155,6 @@ SIMPLE_JWT = {
 }
 
 # ✅ 딥러닝 모델 관련 설정
-# AI_MODEL = load_model("chkpt.pth")
+AI_MODEL = load_model("chkpt.pth")
 # chkpy.pth 파일 업로드된 구글드라이브 링크
 # https://drive.google.com/file/d/1M0H1ExUQL0_IxGFyhDMwkE1hJGUXrssU/view?usp=share_link
