@@ -35,12 +35,7 @@ class CustomUser(AbstractUser):
         max_length=240,
         unique=True,
     )
-    nickname = models.CharField(
-        max_length=20,
-        unique=True,
-        null=True,
-        blank=True,
-    )
+    nickname = models.CharField("닉네임", max_length=20, unique=True, null=True, default=None)
     avatar = models.URLField()
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
