@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.core.validators import validate_email
@@ -35,7 +36,8 @@ class CustomUser(AbstractUser):
         max_length=240,
         unique=True,
     )
-    nickname = models.CharField("닉네임", max_length=20, unique=True, null=True, default=None)
+    nickname = models.CharField(
+        "닉네임", max_length=20, unique=True, null=True, default=None)
     avatar = models.URLField()
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -47,6 +49,9 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    def get_absolute_url(self):
+        return reverse("user_detail", kwargs={"pk": self.pk})
 
     class Meta:
         verbose_name_plural = "회원들"
