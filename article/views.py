@@ -1,4 +1,3 @@
-import base64
 from django.core.files.base import ContentFile
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -10,7 +9,7 @@ from article import serializers
 
 
 class ArticleList(APIView):
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get(self, request):
         article = Article.objects.all()

@@ -46,11 +46,9 @@ class CreateArticleSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        print("Now being created...")
         article = super().create(validated_data)
         result = aiutils.image_mache(article.image)
         article.result = result
-        print(result)
         article.save()
         return article
 
