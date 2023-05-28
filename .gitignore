@@ -4,6 +4,7 @@
 
 # Pytorch Deep learning Model
 chkpt.pth
+sample_for_test.jpg
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,visualstudiocode,python,django
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,visualstudiocode,python,django
