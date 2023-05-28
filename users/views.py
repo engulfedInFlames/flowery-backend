@@ -44,17 +44,23 @@ class UserList(APIView):
 class UserDetail(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def get_object(self, pk):
-        return get_object_or_404(CustomUser, pk=pk)
+    def get(self, request, pk=None):
 
-    def get(self, request, pk):
-        user = self.get_object(pk)
-        serializer = UserSerializer(user)
+        if pk is None:
+            user = request.user
+            if user:
+                serializer = UserSerializer(user)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            user = get_object_or_404(CustomUser, pk=pk)
+            serializer = UserSerializer(user)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
-        user = self.get_object(pk)
+        user = get_object_or_404(CustomUser, pk=pk)
         serializer = UserSerializer(user, data=request.data, partial=True)
 
         if serializer.is_valid():
@@ -66,23 +72,11 @@ class UserDetail(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        user = self.get_object(pk)
+        user = get_object_or_404(CustomUser, pk=pk)
         user.is_active = False
         user.save()
 
         return Response(status=status.HTTP_200_OK)
-
-
-class Me(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        user = request.user
-        if user:
-            serializer = UserSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class KaKaoLogin(APIView):
@@ -105,7 +99,8 @@ class KaKaoLogin(APIView):
                 "code": code,
                 "client_secret": os.environ.get("KAKAO_CLIENT_SECRET"),
             },
-            headers={"Content-type": "application/x-www-form-urlencoded;charset=utf-8"},
+            headers={
+                "Content-type": "application/x-www-form-urlencoded;charset=utf-8"},
         )
 
         access_token = response.json().get("access_token")
