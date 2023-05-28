@@ -66,7 +66,6 @@ import json
 
 def image_mache(imgpath):
     deviceFlag = torch.device("cpu")
-    # 꽃이미지 디렉토리 ex.static/img/flowers
     data_dir = "static/flowers"
     training_transforms = transforms.Compose(
         [

@@ -26,7 +26,7 @@ class ArticleList(APIView):
         data = request.data
         image_data = data.pop("image")
 
-        # From numercial to bytes
+        # From buffer to bytes
         buffer_data = image_data.get("buffer").get("data")
         image_bytes = bytes(buffer_data)
         serializer = serializers.CreateArticleSerializer(data=data)

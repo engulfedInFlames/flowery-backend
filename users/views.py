@@ -85,77 +85,6 @@ class Me(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-class KaKaoLogin(APIView):
-    def post(self, request):
-        code = request.data.get("code", None)
-        token_url = f"https://kauth.kakao.com/oauth/token"
-
-        # ✅ 자신이 설정한 redirect_uri를 할당
-        redirect_uri = ""
-
-        if code is None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        response = requests.post(
-            token_url,
-            data={
-                "grant_type": "authorization_code",
-                "client_id": os.environ.get("KAKAO_API_KEY"),
-                "redirect_uri": redirect_uri,
-                "code": code,
-                "client_secret": os.environ.get("KAKAO_CLIENT_SECRET"),
-            },
-            headers={"Content-type": "application/x-www-form-urlencoded;charset=utf-8"},
-        )
-
-        access_token = response.json().get("access_token")
-        user_url = "https://kapi.kakao.com/v2/user/me"
-        response = requests.get(
-            user_url,
-            headers={
-                "Authorization": f"Bearer {access_token}",
-                "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-            },
-        )
-        user_data = response.json()
-        kakao_account = user_data.get("kakao_account")
-        profile = kakao_account.get("profile")
-
-        if not kakao_account.get("is_email_valid") and not kakao_account.get(
-            "is_email_verified"
-        ):
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        user_email = kakao_account.get("email")
-
-        try:
-            user = CustomUser.objects.get(email=user_email)
-            refresh_token = CustomTokenObtainPairSerializer.get_token(user)
-
-            return Response(
-                {
-                    "refresh": str(refresh_token),
-                    "access": str(refresh_token.access_token),
-                }
-            )
-
-        except CustomUser.DoesNotExist:
-            user = CustomUser.objects.create_user(email=user_email)
-            user.set_unusable_password()
-            user.nickname = profile.get("nickname", f"user#{user.pk}")
-            user.avatar = profile.get("thumbnail_image_url", None)
-            user.save()
-
-            refresh_token = CustomTokenObtainPairSerializer.get_token(user)
-
-            return Response(
-                {
-                    "refresh": str(refresh_token),
-                    "access": str(refresh_token.access_token),
-                }
-            )
-
-
 class GithubLogin(APIView):
     def post(self, request):
         code = request.data.get("code", None)
@@ -235,8 +164,3 @@ class GithubLogin(APIView):
                     "access": str(refresh_token.access_token),
                 }
             )
-
-
-class GoogleLogin(APIView):
-    def post(self, request):
-        pass
