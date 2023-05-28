@@ -60,9 +60,6 @@ class UserChangeForm(forms.ModelForm):
 
 @admin.register(CustomUser)
 class CustomUserAdmin(BaseUserAdmin):
-    # UserAdmin은 extend하면 username이 걸림돌
-    # UserAdmin을 사용할 수는 없을까?
-
     form = UserChangeForm
     add_form = UserCreationForm
 
