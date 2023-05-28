@@ -25,7 +25,7 @@ class ArticleList(APIView):
     def post(self, request):
         data = request.data
         image_data = data.pop("image")
-        print(data)
+
         # From buffer to bytes
         buffer_data = image_data.get("buffer").get("data")
         image_bytes = bytes(buffer_data)
