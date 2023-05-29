@@ -10,31 +10,27 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import CustomUser
-from .serializers import (
-    UserSerializer,
-    CreateUserSerializer,
-    CustomTokenObtainPairSerializer,
-)
+from . import serializers
 
 env_file = dotenv.find_dotenv()
 dotenv.load_dotenv(env_file)
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+    serializer_class = serializers.CustomTokenObtainPairSerializer
 
 
 class UserList(APIView):
     def get(self, request):
         users = CustomUser.objects.all()
-        serializer = UserSerializer(users, many=True)
+        serializer = serializers.UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = CreateUserSerializer(data=request.data)
+        serializer = serializers.CreateUserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            serializer = UserSerializer(user)
+            serializer = serializers.UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         else:
@@ -49,28 +45,9 @@ class UserDetail(APIView):
 
     def get(self, request, pk):
         user = self.get_object(pk)
-        serializer = UserSerializer(user)
+        serializer = serializers.UserSerializer(user)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def put(self, request, pk):
-        user = self.get_object(pk)
-        serializer = UserSerializer(user, data=request.data, partial=True)
-
-        if serializer.is_valid():
-            user = serializer.save()
-            serializer = UserSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk):
-        user = self.get_object(pk)
-        user.is_active = False
-        user.save()
-
-        return Response(status=status.HTTP_200_OK)
 
 
 class Me(APIView):
@@ -79,7 +56,7 @@ class Me(APIView):
     def get(self, request):
         user = request.user
         if user:
-            serializer = UserSerializer(user)
+            serializer = serializers.UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -140,7 +117,7 @@ class GithubLogin(APIView):
         try:
             user = CustomUser.objects.get(email=user_email)
 
-            refresh_token = CustomTokenObtainPairSerializer.get_token(user)
+            refresh_token = serializers.CustomTokenObtainPairSerializer.get_token(user)
 
             return Response(
                 {
@@ -156,7 +133,7 @@ class GithubLogin(APIView):
             user.set_unusable_password()
             user.save()
 
-            refresh_token = CustomTokenObtainPairSerializer.get_token(user)
+            refresh_token = serializers.CustomTokenObtainPairSerializer.get_token(user)
 
             return Response(
                 {
